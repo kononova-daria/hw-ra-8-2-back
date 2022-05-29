@@ -6,7 +6,7 @@ const koaBody = require('koa-body');
 
 const app = new Koa();
 app.use(cors());
-app.use(koaBody());
+app.use(koaBody({json: true}));
 
 const router = new Router();
 router.get('/data', async (ctx, next) => {
@@ -25,9 +25,8 @@ router.get('/loading', async (ctx, next) => {
     ctx.response.body = {status: "ok"};
 });
 
-app.use(router.routes())
-app.use(router.allowedMethods());
+app.use(router.routes()).use(router.allowedMethods());
 
 const port = process.env.PORT || 7070;
 const server = http.createServer(app.callback());
-server.listen(port);
+server.listen(port, () => console.log('server started'));
